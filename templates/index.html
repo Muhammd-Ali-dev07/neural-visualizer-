@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Neural Network Visualizer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+      margin: 0;
+    }
+    .matrix { margin-top: 30px; display: inline-block; }
+    .row { display: flex; }
+    .cell {
+      width: 18px;
+      height: 18px;
+      margin: 1px;
+      text-align: center;
+      font-size: 10px;
+      line-height: 18px;
+      background: #2a2a2a;
+      color: white;
+      border-radius: 4px;
+    }
+    .highlight {
+      background-color: #00ffd5;
+      color: #000;
+      box-shadow: 0 0 8px #00ffd5;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 Neural Network Visualizer</h1>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" required />
+    <button type="submit">Upload & Visualize</button>
+  </form>
+
+  {% if matrix %}
+  <h2>📊 Real Image → Matrix Conversion</h2>
+  <p>(Grayscale average from 224×224×3 input — visualized for learning)</p>
+  <div class="matrix">
+    {% for row in matrix %}
+    <div class="row">
+      {% for val in row %}
+        <div class="cell {% if val > 0 %}highlight{% endif %}">{{ val|round(0) }}</div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <form action="/vector" method="POST">
+    <input type="hidden" name="matrix" value="{{ matrix | tojson | safe }}">
+    <button type="submit" style="margin-top: 20px;">➡️ Continue</button>
+  </form>
+  {% endif %}
+</body>
+</html>
