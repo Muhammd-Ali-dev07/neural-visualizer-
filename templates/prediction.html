@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🎯 Final Prediction</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: #fff;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #00ffd5;
+    }
+
+    .result-box {
+      margin-top: 40px;
+      font-size: 1.8rem;
+      padding: 15px 30px;
+      border-radius: 10px;
+      background-color: #222;
+      display: inline-block;
+      color: #00ffd5;
+      box-shadow: 0 0 15px #00ffd5;
+    }
+
+    .explanation {
+      margin-top: 40px;
+      font-size: 15px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 20px;
+      border-radius: 10px;
+      color: #ccc;
+    }
+
+    .explanation code {
+      color: #fff066;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Final Prediction</h1>
+
+  <div class="result-box">
+    Your image is classified as: <strong>Class {{ prediction }}</strong>
+  </div>
+
+  <div class="explanation">
+    <h3>✨ How Did This Happen?</h3>
+    <p>
+      After going through <strong>Matrix → Vector → Dot Product → ReLU → Softmax</strong>,
+      we pick the class with the <strong>highest probability</strong> as the final result.
+    </p>
+    <p>
+      This is the core of how neural networks make decisions.
+    </p>
+    <p>
+      Mathematically, it's just:
+      <br>
+      <code>prediction = argmax(softmax(x))</code>
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Input Vector</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      color: #00ffd5;
+    }
+    .vector-box {
+      margin-top: 30px;
+      max-height: 400px;
+      overflow-y: auto;
+      background-color: #1b2b34;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 255, 213, 0.4);
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .val {
+      display: inline-block;
+      margin: 3px;
+      padding: 6px 10px;
+      background: #2c3e50;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #00ffd5;
+    }
+    .note {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>📍 Real Feature Vector (1280-dim)</h1>
+  <p>This is the actual feature vector extracted by MobileNetV2 from your uploaded image.</p>
+
+  <div class="vector-box">
+    {% for val in matrix %}
+      <span class="val">{{ val|round(4) }}</span>
+    {% endfor %}
+  </div>
+
+  <form action="/weights" method="POST">
+    <input type="hidden" name="vector" value="{{ matrix | tojson | safe }}">
+    <button type="submit" style="margin-top: 25px;">➡️ Continue</button>
+  </form>
+
+  <div class="note">
+    MobileNetV2 reduced your 224×224×3 image into a powerful 1280-number vector representation<br>
+    using real convolutional layers — all powered by linear algebra 💡
+  </div>
+</body>
+</html>

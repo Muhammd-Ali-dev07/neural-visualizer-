@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Step 3: Multiply with Weights</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #232526, #414345);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #00ffd5;
+      margin-bottom: 10px;
+    }
+
+    .neuron-output {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .neuron-output span {
+      background-color: #222;
+      color: #00ffd5;
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin-left: 10px;
+      box-shadow: 0 0 5px #00ffd5;
+    }
+
+    #chart-container {
+      margin-top: 40px;
+      width: 80%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 255, 213, 0.1);
+    }
+
+    .weights-grid {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .weight-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      justify-content: center;
+    }
+
+    .weight-cell {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      animation: fadein 0.4s;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    #next-btn {
+      margin-top: 40px;
+      padding: 10px 25px;
+      background: #00ffd5;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 255, 213, 0.4);
+      transition: 0.3s ease;
+    }
+
+    #next-btn:hover {
+      background-color: #00d1af;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h2>🧮 Step 3: Vector × Weight Matrix</h2>
+  <p>We now multiply your 1280-length input vector with a 10×1280 weight matrix to get 10 neuron outputs (dot products).</p>
+
+
+  {% for i in range(result|length) %}
+  <div class="neuron-output">
+    Neuron {{ i+1 }} Output: <span>{{ result[i] }}</span>
+  </div>
+{% endfor %}
+
+
+  <div id="chart-container">
+    <h3 style="color: #00ffd5; margin-bottom: 10px;">📊 Output Neurons as Bar Chart</h3>
+    <canvas id="outputChart" height="200"></canvas>
+  </div>
+
+  <div class="weights-grid">
+    <h3 style="color: #00ffd5;">🎨 Weight Matrix (Each Row = Neuron's Weights)</h3>
+    {% for row in weights %}
+      <div class="weight-row">
+        {% for w in row %}
+          <div class="weight-cell" style="background-color: rgb({{ 255 if w < 0 else 0 }}, 0, {{ 255 if w > 0 else 0 }});"></div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div style="margin-top: 40px;">
+    <button id="next-btn" onclick="window.location.href='/activation'">Next Step ➡️</button>
+  </div>
+
+  <script>
+    const output = {{ result | tojson }};
+
+
+    const ctx = document.getElementById('outputChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: output.map((_, i) => 'Neuron ' + (i + 1)),
+        datasets: [{
+          label: 'Dot Product Output',
+          data: output,
+          backgroundColor: '#00ffd5',
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true }
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            ticks: { color: '#ccc' },
+            grid: { color: '#444' }
+          },
+          x: {
+            ticks: { color: '#ccc' },
+            grid: { color: '#444' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

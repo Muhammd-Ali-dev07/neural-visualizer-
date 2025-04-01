@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Step 5: Softmax Activation</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #232526, #414345);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #00ffd5;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #ccc;
+      font-size: 14px;
+    }
+
+    .softmax-box {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .softmax-item {
+      margin: 6px;
+      padding: 6px 12px;
+      background: #222;
+      color: #00ffd5;
+      border-radius: 6px;
+      width: 280px;
+      box-shadow: 0 0 8px #00ffd5;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    #chart-container {
+      margin-top: 50px;
+      width: 80%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 255, 213, 0.1);
+    }
+
+    .explanation {
+      position: absolute;
+      top: 80px;
+      right: 50px;
+      width: 260px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      color: #ddd;
+      text-align: left;
+      box-shadow: 0 0 10px rgba(0, 255, 213, 0.1);
+    }
+
+    .explanation h3 {
+      color: #00ffd5;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .explanation code {
+      color: #fff066;
+      font-size: 13px;
+    }
+
+    #next-btn {
+      margin-top: 40px;
+      padding: 10px 25px;
+      background: #00ffd5;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #next-btn:hover {
+      background-color: #00d1af;
+    }
+  </style>
+</head>
+<body>
+  <h2>🌈 Step 5: Softmax Activation</h2>
+  <p>We now transform ReLU output into probabilities using the <code>softmax</code> function.</p>
+
+  <div class="softmax-box">
+    {% for val in softmax %}
+      <div class="softmax-item">
+        Probability: <strong>{{ '%.5f' % val }}</strong>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div id="chart-container">
+    <h3 style="color: #00ffd5;">📊 Softmax Output Probabilities</h3>
+    <canvas id="softmaxChart" height="180"></canvas>
+  </div>
+
+  <div class="explanation">
+    <h3>📘 What is Softmax?</h3>
+    <p>Softmax turns numbers into probabilities.</p>
+    <ul>
+      <li>Each value is exponentiated.</li>
+      <li>Then divided by the total sum.</li>
+    </ul>
+    <p>
+      <code>softmax(xᵢ) = exp(xᵢ) / Σ(exp(xⱼ))</code>
+    </p>
+    <p>
+      It highlights the strongest neuron by assigning it the highest probability!
+    </p>
+  </div>
+
+  <button id="next-btn" onclick="alert('Coming soon: Final Prediction')">Next Step ➡️</button>
+
+  <script>
+    const probs = {{ softmax | tojson }};
+    const ctx = document.getElementById('softmaxChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: probs.map((_, i) => 'Class ' + (i + 1)),
+        datasets: [{
+          label: 'Softmax Probability',
+          data: probs,
+          backgroundColor: '#00ffd5',
+          borderRadius: 5
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: true }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: '#ccc' },
+            grid: { color: '#444' }
+          },
+          x: {
+            ticks: { color: '#ccc' },
+            grid: { color: '#444' }
+          }
+        }
+      }
+    });
+  </script>
+  <button id="next-btn" onclick="window.location.href='/predict'">Next Step ➡️</button>
+
+</body>
+</html>

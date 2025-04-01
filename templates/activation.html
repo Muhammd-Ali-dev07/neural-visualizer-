@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Step 4: ReLU Activation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #00ffd5;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .output {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .output-box {
+      margin: 6px;
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 8px #00ffd5;
+      background-color: #222;
+      color: #00ffd5;
+      width: 250px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .explanation {
+      position: absolute;
+      top: 80px;
+      right: 50px;
+      width: 260px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      color: #ddd;
+      text-align: left;
+      box-shadow: 0 0 10px rgba(0, 255, 213, 0.1);
+    }
+
+    .explanation h3 {
+      color: #00ffd5;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .explanation code {
+      color: #fff066;
+      font-size: 13px;
+    }
+
+    #next-btn {
+      margin-top: 40px;
+      padding: 10px 25px;
+      background: #00ffd5;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #next-btn:hover {
+      background-color: #00d1af;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡ Step 4: ReLU Activation</h1>
+  <p>We apply <code>f(x) = max(0, x)</code> to the dot product results.</p>
+
+  <div class="output" id="activatedOutput"></div>
+
+  <div class="explanation">
+    <h3>📘 What is ReLU?</h3>
+    <p>ReLU (Rectified Linear Unit) is a common activation function used in neural networks.</p>
+    <ul>
+      <li><code>f(x) = max(0, x)</code></li>
+      <li>Negative values become 0</li>
+      <li>Positive values stay unchanged</li>
+    </ul>
+    <p>It's like applying a filter that removes all negative influence from the dot product!</p>
+  </div>
+
+  <button id="next-btn" onclick="window.location.href='/softmax'">Next Step ➡️</button>
+
+
+
+  <script>
+    const raw = {{ result | tojson }};
+    const activated = {{ activated | tojson }};
+    const container = document.getElementById('activatedOutput');
+
+    raw.forEach((val, i) => {
+      const div = document.createElement('div');
+      div.className = 'output-box';
+      div.innerHTML = `f(${val}) = <strong>${activated[i]}</strong>`;
+      setTimeout(() => container.appendChild(div), i * 150);
+    });
+  </script>
+</body>
+</html>
